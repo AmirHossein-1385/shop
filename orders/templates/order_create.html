@@ -1,0 +1,216 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}تکمیل اطلاعات سفارش{% endblock %}
+
+{% block content %}
+
+<div class="checkout-page" dir="rtl">
+
+    <section class="checkout-header">
+        <h1>تکمیل اطلاعات سفارش</h1>
+        <p>اطلاعات گیرنده و آدرس تحویل سفارش رو بررسی کن.</p>
+    </section>
+
+    <form method="post" class="checkout-form">
+        {% csrf_token %}
+
+        <section class="checkout-section">
+            <h2 class="checkout-section-title">اطلاعات گیرنده</h2>
+
+            <div class="checkout-fields">
+
+                <div class="checkout-field">
+                    <label for="first_name">نام</label>
+                    <input
+                        type="text"
+                        id="first_name"
+                        name="first_name"
+                        value="{{ form.first_name.value|default:'' }}"
+                        placeholder="نام گیرنده"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field">
+                    <label for="last_name">نام خانوادگی</label>
+                    <input
+                        type="text"
+                        id="last_name"
+                        name="last_name"
+                        value="{{ form.last_name.value|default:'' }}"
+                        placeholder="نام خانوادگی گیرنده"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field checkout-full">
+                    <label for="phone">شماره تماس</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value="{{ form.phone.value|default:'' }}"
+                        placeholder="شماره تماس گیرنده"
+                        required
+                    >
+                </div>
+
+            </div>
+        </section>
+
+        <section class="checkout-section">
+            <h2 class="checkout-section-title">انتخاب آدرس</h2>
+
+            <div class="checkout-addresses">
+
+                {% for address in user.addresses.all %}
+
+                    <label class="checkout-address-card">
+                        <input
+                            type="radio"
+                            name="address_select"
+                            value="{{ address.id }}"
+                            data-province="{{ address.province }}"
+                            data-city="{{ address.city }}"
+                            data-postal-code="{{ address.postal_code }}"
+                            data-address="{{ address.address }}"
+                        >
+
+                        <span class="checkout-radio"></span>
+
+                        <div class="checkout-address-content">
+                            <strong>{{ address.title }}</strong>
+
+                            <p>{{ address.province }} - {{ address.city }}</p>
+                            <p>{{ address.address }}</p>
+                            <p>کد پستی: {{ address.postal_code }}</p>
+                        </div>
+                    </label>
+
+                {% endfor %}
+
+                <label class="checkout-address-card checkout-new-address">
+                    <input
+                        type="radio"
+                        name="address_select"
+                        value="new"
+                    >
+
+                    <span class="checkout-radio"></span>
+
+                    <div class="checkout-address-content">
+                        <strong>+ افزودن آدرس جدید</strong>
+                        <p>وارد کردن اطلاعات آدرس به صورت دستی</p>
+                    </div>
+                </label>
+
+            </div>
+        </section>
+
+        <section class="checkout-section">
+            <h2 class="checkout-section-title">جزئیات آدرس تحویل</h2>
+
+            <div class="checkout-fields">
+
+                <div class="checkout-field">
+                    <label for="province">استان</label>
+                    <input
+                        type="text"
+                        name="province"
+                        id="province"
+                        value="{{ form.province.value|default:'' }}"
+                        placeholder="نام استان"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field">
+                    <label for="city">شهر</label>
+                    <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        value="{{ form.city.value|default:'' }}"
+                        placeholder="نام شهر"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field checkout-full">
+                    <label for="postal_code">کد پستی</label>
+                    <input
+                        type="text"
+                        name="postal_code"
+                        id="postal_code"
+                        value="{{ form.postal_code.value|default:'' }}"
+                        placeholder="کد پستی ده رقمی"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field checkout-full">
+                    <label for="address">آدرس کامل</label>
+                    <textarea
+                        name="address"
+                        id="address"
+                        rows="4"
+                        placeholder="خیابان، کوچه، پلاک و واحد"
+                        required
+                    >{{ form.address.value|default:'' }}</textarea>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="checkout-actions">
+            <button type="submit" class="checkout-submit">
+                انتقال به صفحه پرداخت
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    const addressInputs = document.querySelectorAll(
+        'input[name="address_select"]'
+    );
+
+    const province = document.getElementById('province');
+    const city = document.getElementById('city');
+    const postalCode = document.getElementById('postal_code');
+    const address = document.getElementById('address');
+
+    addressInputs.forEach(input => {
+        input.addEventListener('change', function () {
+
+            if (this.value === 'new') {
+                province.value = '';
+                city.value = '';
+                postalCode.value = '';
+                address.value = '';
+
+                province.readOnly = false;
+                city.readOnly = false;
+                postalCode.readOnly = false;
+                address.readOnly = false;
+
+                return;
+            }
+
+            province.value = this.dataset.province;
+            city.value = this.dataset.city;
+            postalCode.value = this.dataset.postalCode;
+            address.value = this.dataset.address;
+
+            province.readOnly = true;
+            city.readOnly = true;
+            postalCode.readOnly = true;
+            address.readOnly = true;
+        });
+    });
+</script>
+
+{% endblock %}

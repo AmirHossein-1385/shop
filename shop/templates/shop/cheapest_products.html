@@ -1,0 +1,87 @@
+{% extends 'parent/base.html' %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}ارزان‌ترین محصولات{% endblock %}
+
+{% block content %}
+
+{% cheapest_products as cheapest_product %}
+
+<div class="cheapest-page" dir="rtl">
+
+    <section class="cheapest-header">
+        <h1>ارزان‌ترین محصولات</h1>
+        <p>محصولات فروشگاه را با قیمت مناسب پیدا کن.</p>
+    </section>
+
+    <div class="cheapest-grid">
+
+        {% for product in cheapest_product %}
+
+            <article class="cheapest-card">
+
+                <a href="{{ product.get_absolute_url }}"
+                   class="cheapest-image">
+
+                    {% if product.images.first %}
+                        <img
+                            src="{{ product.images.first.file.url }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="cheapest-no-image">
+                            تصویری موجود نیست
+                        </div>
+                    {% endif %}
+
+                </a>
+
+                <div class="cheapest-content">
+
+                    <h2 class="cheapest-name">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.name }}
+                        </a>
+                    </h2>
+
+                    <div class="cheapest-prices">
+
+                        {% if product.price > product.new_price %}
+                            <span class="cheapest-old-price">
+                                {{ product.price }} تومان
+                            </span>
+                        {% endif %}
+
+                        <strong class="cheapest-new-price">
+                            {{ product.new_price }} تومان
+                        </strong>
+
+                    </div>
+
+                    <a href="{{ product.get_absolute_url }}"
+                       class="cheapest-view-btn">
+                        مشاهده محصول
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="cheapest-empty">
+                <h2>محصولی پیدا نشد</h2>
+                <p>در حال حاضر محصولی برای نمایش وجود ندارد.</p>
+                <a href="{% url 'shop:product_list' %}">
+                    مشاهده همه محصولات
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

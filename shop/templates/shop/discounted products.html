@@ -1,0 +1,156 @@
+{% extends 'parent/base.html' %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}محصولات تخفیف‌دار{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="catalog-page" dir="rtl">
+
+    <section class="catalog-header">
+        <h1>
+            {% if category %}
+                تخفیف‌های دسته {{ category }}
+            {% else %}
+                محصولات تخفیف‌دار
+            {% endif %}
+        </h1>
+        <p>محصولات دارای تخفیف فروشگاه را مشاهده کنید.</p>
+    </section>
+
+    <div class="catalog-layout">
+
+        <aside class="catalog-sidebar">
+
+            <div class="sidebar-card">
+                <h3>دسته‌بندی محصولات</h3>
+
+                <ul class="categories">
+                    <li>
+                        <a href="{% url 'shop:discounted_products' %}">
+                            همه تخفیف‌ها
+                        </a>
+                    </li>
+
+                    {% for ct in categories %}
+                        <li>
+                            <a href="{% url 'shop:discounted_products_by_category' ct.slug %}">
+                                {{ ct.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>فیلتر قیمت</h3>
+
+                <form class="price-filter" method="get">
+
+                    <label for="min-price">حداقل قیمت</label>
+                    <input
+                        id="min-price"
+                        type="number"
+                        name="min-price"
+                        min="0"
+                        placeholder="مثلاً 100000"
+                    >
+
+                    <label for="max-price">حداکثر قیمت</label>
+                    <input
+                        id="max-price"
+                        type="number"
+                        name="max-price"
+                        min="0"
+                        placeholder="مثلاً 500000"
+                    >
+
+                    <button type="submit">اعمال فیلتر</button>
+                </form>
+            </div>
+
+        </aside>
+
+        <main class="catalog-main">
+
+            <div class="catalog-toolbar">
+                <span>محصولات تخفیف‌دار</span>
+                <span class="catalog-count">
+                    {{ products.paginator.count }} محصول
+                </span>
+            </div>
+
+            <div class="products-grid">
+
+                {% for product in products %}
+
+                    <article class="catalog-product">
+
+                        <a href="{{ product.get_absolute_url }}"
+                           class="catalog-product-image">
+
+                            {% if product.images.first %}
+                                <img src="{{ product.images.first.file.url }}"
+                                     alt="{{ product.name }}">
+                            {% else %}
+                                <div class="no-product-image">
+                                    تصویری موجود نیست
+                                </div>
+                            {% endif %}
+
+                        </a>
+
+                        <div class="catalog-product-content">
+
+                            <h2>
+                                <a href="{{ product.get_absolute_url }}">
+                                    {{ product.name }}
+                                </a>
+                            </h2>
+
+                            <div class="catalog-product-price">
+                                <span class="catalog-old-price">
+                                    {{ product.price }} تومان
+                                </span>
+
+                                <strong>
+                                    {{ product.new_price }} تومان
+                                </strong>
+                            </div>
+
+                            <a href="{{ product.get_absolute_url }}"
+                               class="view-product-btn">
+                                مشاهده محصول
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="catalog-empty">
+                        <h3>محصول تخفیف‌داری پیدا نشد</h3>
+                        <p>دسته‌بندی یا محدوده قیمت دیگری را امتحان کنید.</p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% include 'partials/pagination.html' with page=products %}
+
+        </main>
+
+    </div>
+
+</div>
+
+{% endblock %}

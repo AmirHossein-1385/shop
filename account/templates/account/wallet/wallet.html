@@ -1,0 +1,45 @@
+{% extends "parent/base.html" %}
+{% block content %}
+<div class="wallet-container" dir="rtl">
+
+    <div class="wallet-header">
+        <h2>کیف پول من</h2>
+        <p>مدیریت موجودی و تراکنش‌های شما</p>
+    </div>
+
+    <div class="wallet-card">
+        <div class="wallet-card-top">
+            <span>موجودی کیف پول</span>
+            <span class="wallet-symbol">◈</span>
+        </div>
+
+        <div class="wallet-balance">
+            {{ user.wallet.balance|floatformat:0 }}
+            <span>تومان</span>
+        </div>
+
+        <div class="wallet-user">
+            <span>صاحب کیف پول:</span>
+            <strong>{{ user }}</strong>
+        </div>
+
+        <div class="wallet-date">
+            تاریخ ایجاد:
+            {{ user.wallet.created|date:"Y/m/d" }}
+        </div>
+    </div>
+
+    <div class="wallet-actions">
+        <a href="{% url 'account:wallet_recharge' %}"
+           class="wallet-btn recharge-btn">
+            + شارژ کیف پول
+        </a>
+
+        <a href="{% url 'account:wallet_transaction' %}"
+           class="wallet-btn transaction-btn">
+            تاریخچه تراکنش‌ها
+        </a>
+    </div>
+
+</div>
+{% endblock %}

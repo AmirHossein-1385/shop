@@ -1,0 +1,6 @@
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'account:reset_password' %}">ایا رمز خود را فراموش کرده اید؟</a>
+    <button type="submit">Submit</button>
+</form>

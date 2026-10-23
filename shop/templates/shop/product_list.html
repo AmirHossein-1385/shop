@@ -1,0 +1,202 @@
+
+{% extends 'parent/base.html' %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}فروشگاه | محصولات{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="catalog-page" dir="rtl">
+
+    <section class="catalog-header">
+        {% if category %}
+            <h1>محصولات دسته {{ category }}</h1>
+            <p>محصولات این دسته را بررسی و مقایسه کنید.</p>
+        {% else %}
+            <h1>همه محصولات</h1>
+            <p>محصول مورد نظرت را از بین محصولات فروشگاه انتخاب کن.</p>
+        {% endif %}
+    </section>
+
+    <div class="catalog-layout">
+
+        <aside class="catalog-sidebar">
+
+            <div class="sidebar-card">
+                <h3>دسته‌بندی محصولات</h3>
+
+                <ul class="categories">
+                    <li>
+                        <a href="{% url 'shop:product_list' %}">
+                            همه محصولات
+                        </a>
+                    </li>
+
+                    {% for ct in categories %}
+                        <li>
+                            <a href="{{ ct.get_absolute_url }}">
+                                {{ ct.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>فیلتر قیمت</h3>
+
+                <form class="price-filter"
+                      method="get"
+                      action="">
+
+                    <label for="min-price">حداقل قیمت</label>
+                    <input
+                        id="min-price"
+                        type="number"
+                        name="min-price"
+                        min="0"
+                        placeholder="مثلاً 100000"
+                    >
+
+                    <label for="max-price">حداکثر قیمت</label>
+                    <input
+                        id="max-price"
+                        type="number"
+                        name="max-price"
+                        min="0"
+                        placeholder="مثلاً 500000"
+                    >
+
+                    <button type="submit">اعمال فیلتر</button>
+                </form>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>دسترسی سریع</h3>
+
+                <ul class="quick-links">
+                    <li>
+                        <a href="{% url 'shop:cheapest_product' %}">
+                            ارزان‌ترین محصولات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'shop:expensive_products' %}">
+                            گران‌ترین محصولات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'shop:latest_products' %}">
+                            جدیدترین محصولات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'shop:best_selling_products' %}">
+                            پرفروش‌ترین محصولات
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'shop:list_saved_product' %}">
+                            محصولات ذخیره‌شده
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'orders:list_orders' %}">
+                            سفارش‌های من
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <main class="catalog-main">
+
+            <div class="catalog-toolbar">
+                <span>محصولات فروشگاه</span>
+                <span class="catalog-count">
+                    {{ products.paginator.count }} محصول
+                </span>
+            </div>
+
+            <div class="products-grid">
+
+                {% for product in products %}
+
+                    <article class="catalog-product">
+
+                        <a
+                            href="{{ product.get_absolute_url }}"
+                            class="catalog-product-image"
+                        >
+                            {% if product.images.first %}
+                                <img
+                                    src="{{ product.images.first.file.url }}"
+                                    alt="{{ product.name }}"
+                                >
+                            {% else %}
+                                <div class="no-product-image">
+                                    تصویری موجود نیست
+                                </div>
+                            {% endif %}
+                        </a>
+
+                        <div class="catalog-product-content">
+
+                            <h2>
+                                <a href="{{ product.get_absolute_url }}">
+                                    {{ product.name }}
+                                </a>
+                            </h2>
+
+                            <div class="catalog-product-price">
+                                <span class="catalog-old-price">
+                                    {{ product.price }} تومان
+                                </span>
+
+                                <strong>
+                                    {{ product.new_price }} تومان
+                                </strong>
+                            </div>
+
+                            <a
+                                href="{{ product.get_absolute_url }}"
+                                class="view-product-btn"
+                            >
+                                مشاهده محصول
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="catalog-empty">
+                        <h3>محصولی پیدا نشد</h3>
+                        <p>محصول دیگری را انتخاب کن یا فیلتر قیمت را تغییر بده.</p>
+                        <a href="{% url 'shop:product_list' %}">
+                            مشاهده همه محصولات
+                        </a>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% include 'partials/pagination.html' with page=products %}
+
+        </main>
+
+    </div>
+
+</div>
+
+{% endblock %}

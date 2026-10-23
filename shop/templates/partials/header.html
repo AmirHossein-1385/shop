@@ -1,0 +1,68 @@
+
+<header class="shop-header" dir="rtl">
+    <div class="header-main">
+
+        <a href="#" class="shop-logo">
+            <span class="logo-icon">S</span>
+            <span>Shop</span>
+        </a>
+
+        <div class="header-search">
+            <form action="{% url 'shop:search' %}" method="get">
+                <input
+                    type="search"
+                    name="query"
+                    class="input-search"
+                    placeholder="جست‌وجوی محصولات..."
+                >
+                <button type="submit">جست‌وجو</button>
+            </form>
+        </div>
+
+        <nav class="header-actions">
+
+            <a href="{% url 'cart:card_detail' %}" class="header-action">
+                <span class="action-icon">🛒</span>
+                <span class="action-content">
+                    <span class="action-title">سبد خرید</span>
+                    {% with item_count=cart|length %}
+                    <span class="action-description">
+                        <span id="item_count">{{ item_count }}</span>
+                        کالا -
+                        <span id="total_price">{{ cart.get_final_price }}</span>
+                        تومان
+                    </span>
+                    {% endwith %}
+                </span>
+            </a>
+
+            {% if request.user.is_authenticated %}
+
+                <a href="{% url 'account:wallet' %}" class="header-action">
+                    <span class="action-icon">◈</span>
+                    <span class="action-content">
+                        <span class="action-title">کیف پول</span>
+                        <span class="action-description">حساب من</span>
+                    </span>
+                </a>
+
+                <a href="{% url 'account:logout' %}" class="account-button">
+                    خروج
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'account:login' %}" class="account-button">
+                    ورود
+                </a>
+
+                <a href="{% url 'account:register' %}" class="register-button">
+                    ثبت‌نام
+                </a>
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+</header>

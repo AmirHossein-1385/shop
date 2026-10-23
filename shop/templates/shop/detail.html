@@ -1,0 +1,429 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="product-page" dir="rtl">
+
+    <header class="detail-header">
+        <div>
+            <span class="detail-eyebrow">فروشگاه آنلاین</span>
+            <h1>جزئیات محصول</h1>
+            <p>مشخصات، قیمت و نظرات کاربران را بررسی کنید.</p>
+        </div>
+    </header>
+
+    <section class="detail-main">
+
+        <div class="detail-gallery">
+
+            {% for img in product.images.all %}
+                <div class="detail-image-box">
+                    <img src="{{ img.file.url }}"
+                         alt="{{ product.name }}">
+                </div>
+            {% empty %}
+                <div class="detail-image-empty">
+                    تصویری برای این محصول موجود نیست.
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="detail-info">
+
+            <span class="detail-category">
+                {{ product.category }}
+            </span>
+
+            <h2 class="detail-name">{{ product.name }}</h2>
+
+            <div class="detail-rating">
+
+                {% if product.average_rating %}
+                    <span class="detail-rating-star">★</span>
+                    <strong>{{ product.average_rating|floatformat:1 }}</strong>
+                    <span>از ۵</span>
+                {% else %}
+                    <span class="detail-no-rating">
+                        هنوز امتیازی ثبت نشده است
+                    </span>
+                {% endif %}
+
+            </div>
+
+            <div class="detail-specs">
+
+                <div class="detail-spec">
+                    <span>دسته‌بندی</span>
+                    <strong>{{ product.category }}</strong>
+                </div>
+
+                <div class="detail-spec">
+                    <span>وضعیت موجودی</span>
+                    {% if product.inventory > 0 %}
+                        <strong class="detail-stock">
+                            موجود · {{ product.inventory }} عدد
+                        </strong>
+                    {% else %}
+                        <strong class="detail-out-stock">
+                            ناموجود
+                        </strong>
+                    {% endif %}
+                </div>
+
+                <div class="detail-spec">
+                    <span>وزن محصول</span>
+                    <strong>{{ product.weight }} گرم</strong>
+                </div>
+
+            </div>
+
+            <div class="detail-price-box">
+
+                {% if product.price > product.new_price %}
+                    <div class="detail-old-price">
+                        <span>قیمت قبلی</span>
+                        <del>{{ product.price }} تومان</del>
+                    </div>
+                {% endif %}
+
+                <div class="detail-current-price">
+                    <span>قیمت نهایی</span>
+                    <strong>
+                        {{ product.new_price }}
+                        <small>تومان</small>
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="detail-actions">
+
+                {% if product.inventory > 0 %}
+                    <button type="button"
+                            id="add_to_cart"
+                            class="detail-cart-btn">
+                        <span>＋</span>
+                        افزودن به سبد خرید
+                    </button>
+                {% else %}
+                    <button type="button"
+                            class="detail-cart-btn detail-disabled-btn"
+                            disabled>
+                        محصول ناموجود است
+                    </button>
+                {% endif %}
+
+                {% if is_save %}
+                    <button type="button"
+                            id="save-product"
+                            class="detail-save-btn">
+                        ♥ حذف از علاقه‌مندی‌ها
+                    </button>
+                {% else %}
+                    <button type="button"
+                            id="save-product"
+                            class="detail-save-btn">
+                        ♡ افزودن به علاقه‌مندی‌ها
+                    </button>
+                {% endif %}
+
+            </div>
+
+            <div id="detail-feedback" class="detail-feedback"></div>
+
+            <div class="detail-assurance">
+                <span>✓</span>
+                <p>پیش از ثبت سفارش، موجودی و مشخصات محصول را بررسی کنید.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="detail-description">
+
+        <div class="detail-section-heading">
+            <span></span>
+            <h2>توضیحات محصول</h2>
+        </div>
+
+        <div class="detail-description-content">
+            {% if product.description %}
+                {{ product.description|linebreaks }}
+            {% else %}
+                <p>توضیحاتی برای این محصول ثبت نشده است.</p>
+            {% endif %}
+        </div>
+
+    </section>
+
+    <section class="detail-similar">
+
+        <div class="detail-section-heading">
+            <span></span>
+            <h2>محصولات مشابه</h2>
+        </div>
+
+        <div class="detail-similar-grid">
+
+            {% for similar in similar_products %}
+
+                <article class="detail-similar-card">
+
+                    <a href="{{ similar.get_absolute_url }}"
+                       class="detail-similar-image">
+
+                        {% with image=similar.images.first %}
+                            {% if image %}
+                                <img src="{{ image.file.url }}"
+                                     alt="{{ similar.name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <span>تصویری موجود نیست</span>
+                            {% endif %}
+                        {% endwith %}
+
+                    </a>
+
+                    <div class="detail-similar-content">
+
+                        <h3>
+                            <a href="{{ similar.get_absolute_url }}">
+                                {{ similar.name }}
+                            </a>
+                        </h3>
+
+                        <div class="detail-similar-price">
+                            <strong>{{ similar.new_price }}</strong>
+                            <span>تومان</span>
+                        </div>
+
+                        <a href="{{ similar.get_absolute_url }}"
+                           class="detail-similar-btn">
+                            مشاهده محصول
+                        </a>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="detail-no-similar">
+                    محصول مشابهی برای نمایش وجود ندارد.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    <section class="detail-comments">
+
+        <div class="detail-section-heading">
+            <span></span>
+            <h2>نظرات کاربران</h2>
+        </div>
+
+        <form method="post"
+              action="{% url 'shop:comment' product.id %}"
+              class="detail-comment-form">
+
+            {% csrf_token %}
+
+            <div class="detail-form-group">
+
+                <label for="{{ form.text.id_for_label }}">
+                    نظر خود را درباره این محصول بنویسید
+                </label>
+
+                {{ form.text }}
+
+            </div>
+
+            <div class="detail-rating-input">
+
+                <span class="detail-rating-label">امتیاز شما:</span>
+
+                <div class="detail-rating-select" id="rating-select">
+                    <span class="detail-rating-star-input" data-value="1">★</span>
+                    <span class="detail-rating-star-input" data-value="2">★</span>
+                    <span class="detail-rating-star-input" data-value="3">★</span>
+                    <span class="detail-rating-star-input" data-value="4">★</span>
+                    <span class="detail-rating-star-input" data-value="5">★</span>
+                </div>
+
+                <input type="hidden" name="rating" id="rating-value">
+
+                <span id="rating-number">۰</span>
+
+            </div>
+
+            <button type="submit" class="detail-comment-submit">
+                ارسال نظر
+            </button>
+
+        </form>
+
+        <div class="detail-comments-list">
+
+            {% for c in product.comments.all %}
+
+                {% if c.active %}
+
+                    <article class="detail-comment-card">
+
+                        <div class="detail-comment-header">
+
+                            <strong class="detail-comment-user">
+                                {{ c.user.first_name }}
+                                {{ c.user.last_name }}
+                            </strong>
+
+                            <div class="detail-comment-rating">
+
+                                {% for star in c.rating_stars %}
+                                    <span class="star {{ star }}">★</span>
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <p class="detail-comment-text">{{ c.text }}</p>
+
+                        <span class="detail-comment-date">
+                            {{ c.created|date:"Y/m/d" }}
+                        </span>
+
+                    </article>
+
+                {% endif %}
+
+            {% empty %}
+
+                <p class="detail-no-comments">
+                    هنوز نظری برای این محصول ثبت نشده است.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    $('#add_to_cart').on('click', function () {
+
+        const button = $(this);
+
+        button.prop('disabled', true);
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:add_to_cart" product.id %}',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+                $('#item_count').text(data.item_count);
+                $('#total_price').text(data.total_price);
+
+                $('#detail-feedback')
+                    .text(data.message || 'محصول به سبد خرید اضافه شد.')
+                    .removeClass('detail-feedback-error')
+                    .addClass('detail-feedback-success');
+            },
+            error: function (xhr) {
+                $('#detail-feedback')
+                    .text('افزودن محصول انجام نشد. لطفاً دوباره تلاش کنید.')
+                    .removeClass('detail-feedback-success')
+                    .addClass('detail-feedback-error');
+            },
+            complete: function () {
+                button.prop('disabled', false);
+            }
+        });
+
+    });
+
+    $('#save-product').on('click', function () {
+
+        const button = $(this);
+
+        button.prop('disabled', true);
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "shop:save_product" product.id %}',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (data) {
+                if (data.save) {
+                    button.text('♥ حذف از علاقه‌مندی‌ها');
+                } else {
+                    button.text('♡ افزودن به علاقه‌مندی‌ها');
+                }
+            },
+            error: function () {
+                $('#detail-feedback')
+                    .text('تغییر علاقه‌مندی انجام نشد.')
+                    .removeClass('detail-feedback-success')
+                    .addClass('detail-feedback-error');
+            },
+            complete: function () {
+                button.prop('disabled', false);
+            }
+        });
+
+    });
+
+});
+
+const stars = document.querySelectorAll('.detail-rating-star-input');
+const ratingInput = document.getElementById('rating-value');
+const ratingNumber = document.getElementById('rating-number');
+
+function updateRating(value) {
+    stars.forEach(function (star) {
+        const starValue = Number(star.dataset.value);
+
+        star.classList.remove('full', 'half', 'empty');
+
+        if (starValue <= value) {
+            star.classList.add('full');
+        } else if (starValue - 0.5 === value) {
+            star.classList.add('half');
+        } else {
+            star.classList.add('empty');
+        }
+    });
+
+    ratingInput.value = value;
+    ratingNumber.textContent = value.toLocaleString('fa-IR');
+}
+
+stars.forEach(function (star) {
+    star.addEventListener('click', function (event) {
+        const rect = star.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const value = Number(star.dataset.value);
+
+        updateRating(clickX < rect.width / 2 ? value - 0.5 : value);
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="saved-products">
+    <h2 class="saved-title">محصولات ذخیره شده</h2>
+
+    <div class="products-grid">
+        {% for product in user.saved_products.all %}
+            <div class="product-card">
+
+                <div class="product-image">
+                    {% if product.images.first %}
+                        <img src="{{ product.images.first.file.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                </div>
+
+                <div class="product-content">
+                    <h3>{{ product.name }}</h3>
+
+                    <p class="product-description">
+                        {{ product.description|truncatewords:15 }}
+                    </p>
+
+                    <div class="product-bottom">
+                        <span class="product-price">
+                            {{ product.new_price }} تومان
+                        </span>
+
+                        <a href="{{ product.get_absolute_url }}" class="product-link">
+                            مشاهده محصول
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        {% empty %}
+            <p class="empty-saved">هنوز محصولی ذخیره نکرده‌اید.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

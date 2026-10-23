@@ -1,0 +1,107 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}نتایج جست‌وجو{% endblock %}
+
+{% block content %}
+
+<div class="search-page" dir="rtl">
+
+    <section class="search-header">
+        <h1>نتایج جست‌وجو</h1>
+
+        {% if query %}
+            <p>
+                نتایج جست‌وجو برای:
+                <strong>«{{ query }}»</strong>
+            </p>
+        {% else %}
+            <p>محصول موردنظرت رو در فروشگاه پیدا کن.</p>
+        {% endif %}
+    </section>
+
+    {% if query %}
+        <div class="search-result-info">
+            نتایج جست‌وجوی شما
+        </div>
+    {% endif %}
+
+    <div class="search-grid">
+
+        {% for product in products %}
+
+            <article class="search-card">
+
+                <a href="{{ product.get_absolute_url }}"
+                   class="search-image">
+
+                    {% if product.images.first %}
+                        <img
+                            src="{{ product.images.first.file.url }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="search-no-image">
+                            تصویری موجود نیست
+                        </div>
+                    {% endif %}
+
+                </a>
+
+                <div class="search-content">
+
+                    <h2 class="search-name">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.name }}
+                        </a>
+                    </h2>
+
+                    <p class="search-description">
+                        {{ product.description|truncatechars:100 }}
+                    </p>
+
+                    <div class="search-prices">
+
+                        {% if product.price > product.new_price %}
+                            <span class="search-old-price">
+                                {{ product.price }} تومان
+                            </span>
+                        {% endif %}
+
+                        <strong class="search-new-price">
+                            {{ product.new_price }} تومان
+                        </strong>
+
+                    </div>
+
+                    <a href="{{ product.get_absolute_url }}"
+                       class="search-view-btn">
+                        مشاهده محصول
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="search-empty">
+                <h2>محصولی پیدا نشد!</h2>
+
+                <p>
+                    محصولی مطابق عبارت جست‌وجوشده پیدا نکردیم.
+                    نام محصول رو بررسی کن یا عبارت دیگری جست‌وجو کن.
+                </p>
+
+                <a href="{% url 'shop:product_list' %}">
+                    مشاهده همه محصولات
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

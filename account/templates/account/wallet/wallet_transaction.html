@@ -1,0 +1,109 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}تاریخچه تراکنش‌ها{% endblock %}
+
+{% block content %}
+
+<div class="transactions-page" dir="rtl">
+
+    <div class="transactions-header">
+        <div>
+            <h1>تراکنش‌های کیف پول</h1>
+            <p>تمام واریزها و پرداخت‌های کیف پول خود را اینجا مشاهده کنید.</p>
+        </div>
+
+        <a href="{% url 'account:wallet'%}" class="transactions-back">
+            بازگشت به کیف پول
+        </a>
+    </div>
+
+    <div class="transactions-summary">
+
+        <div class="transactions-summary-card">
+            <div class="transactions-summary-icon wallet-summary-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="15" rx="2"/>
+                    <path d="M3 9h18"/>
+                    <path d="M16 14h2"/>
+                    <path d="M7 3h10"/>
+                </svg>
+            </div>
+            <span>موجودی فعلی</span>
+            <strong>{{ user.wallet.balance|floatformat:0 }} <small>تومان</small></strong>
+        </div>
+
+        <div class="transactions-summary-card">
+            <div class="transactions-summary-icon deposit-summary-icon">
+                <span>↓</span>
+            </div>
+            <span>تعداد تراکنش‌ها</span>
+            <strong>{{ transactions|length }} <small>تراکنش</small></strong>
+        </div>
+
+    </div>
+
+    <div class="transactions-list-section">
+
+        <div class="transactions-list-header">
+            <h2>تاریخچه فعالیت‌ها</h2>
+            <span>{{ transactions|length }} مورد</span>
+        </div>
+
+        <div class="transactions-list">
+
+            {% for t in transactions %}
+                <div class="transaction-item">
+
+                    <div class="transaction-item-icon {% if t.type == 'deposit' %}transaction-deposit-icon{% else %}transaction-purchase-icon{% endif %}">
+                        {% if t.type == 'deposit' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 19V5"/>
+                                <path d="m5 12 7-7 7 7"/>
+                            </svg>
+                        {% else %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 7h14l-1 13H6L5 7Z"/>
+                                <path d="M9 7a3 3 0 0 1 6 0"/>
+                            </svg>
+                        {% endif %}
+                    </div>
+
+                    <div class="transaction-info">
+                        <h3>{{ t.get_type_display }}</h3>
+                        <span>{{ t.created|date:"Y/m/d - H:i" }}</span>
+                    </div>
+
+                    <div class="transaction-amount">
+                        <strong class="{% if t.type == 'deposit' %}positive{% else %}negative{% endif %}">
+                            {% if t.type == 'deposit' %}+{% else %}-{% endif %}{{ t.amount|floatformat:0 }}
+                        </strong>
+                        <small>تومان</small>
+                    </div>
+
+                </div>
+            {% empty %}
+                <div class="transactions-empty">
+                    <div class="transactions-empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="17" rx="2"/>
+                            <path d="M8 2v4M16 2v4M3 9h18"/>
+                            <path d="M8 14h3M8 17h6"/>
+                        </svg>
+                    </div>
+                    <h3>هنوز تراکنشی ندارید</h3>
+                    <p>پس از شارژ کیف پول یا خرید با آن، تراکنش‌های شما در این بخش نمایش داده می‌شوند.</p>
+                    <a href="{% url 'shop:product_list' %}">مشاهده محصولات</a>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

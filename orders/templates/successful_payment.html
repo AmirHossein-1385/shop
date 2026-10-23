@@ -1,0 +1,41 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}پرداخت موفق{% endblock %}
+
+{% block content %}
+
+<div class="success-page" dir="rtl">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12.5l4.5 4.5L19 7"/>
+            </svg>
+        </div>
+
+        <h1>پرداخت با موفقیت انجام شد!</h1>
+
+        <p class="success-description">
+            سفارش شما با موفقیت پرداخت شد و در سیستم ثبت شده است.
+            می‌توانید برای مشاهده محصولات به فروشگاه برگردید.
+        </p>
+
+        <div class="success-status">
+            <span class="success-status-dot"></span>
+            پرداخت موفق
+        </div>
+
+        <a href="{% url 'shop:product_list' %}" class="success-button">
+            بازگشت به فروشگاه
+            <span>←</span>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

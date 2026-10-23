@@ -1,0 +1,23 @@
+<nav class="shop-navigation" dir="rtl">
+    <div class="shop-navigation-container">
+
+        <a href="{% url 'shop:product_list' %}"
+           class="nav-link active">
+            <span>⌂</span>
+            صفحه اصلی
+        </a>
+
+        <a href="{% url 'shop:discounted_products'%}" class="nav-link">
+            تخفیف‌ها
+        </a>
+
+        <a href="{% url 'shop:about' %}" class="nav-link">
+            درباره ما
+        </a>
+
+        <a href="{% url 'shop:contact' %}" class="nav-link">
+            تماس با ما
+        </a>
+
+    </div>
+</nav>

@@ -1,0 +1,87 @@
+{% extends 'parent/base.html' %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}گران‌ترین محصولات{% endblock %}
+
+{% block content %}
+
+{% most_expensive_products as expensive_products %}
+
+<div class="expensive-page" dir="rtl">
+
+    <section class="expensive-header">
+        <h1>گران‌ترین محصولات</h1>
+        <p>محصولات ویژه و گران‌قیمت فروشگاه را بررسی کن.</p>
+    </section>
+
+    <div class="expensive-grid">
+
+        {% for product in expensive_products %}
+
+            <article class="expensive-card">
+
+                <a href="{{ product.get_absolute_url }}"
+                   class="expensive-image">
+
+                    {% if product.images.first %}
+                        <img
+                            src="{{ product.images.first.file.url }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="expensive-no-image">
+                            تصویری موجود نیست
+                        </div>
+                    {% endif %}
+
+                </a>
+
+                <div class="expensive-content">
+
+                    <h2 class="expensive-name">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.name }}
+                        </a>
+                    </h2>
+
+                    <div class="expensive-prices">
+
+                        {% if product.price > product.new_price %}
+                            <span class="expensive-old-price">
+                                {{ product.price }} تومان
+                            </span>
+                        {% endif %}
+
+                        <strong class="expensive-new-price">
+                            {{ product.new_price }} تومان
+                        </strong>
+
+                    </div>
+
+                    <a href="{{ product.get_absolute_url }}"
+                       class="expensive-view-btn">
+                        مشاهده محصول
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="expensive-empty">
+                <h2>محصولی پیدا نشد</h2>
+                <p>در حال حاضر محصولی برای نمایش وجود ندارد.</p>
+                <a href="{% url 'shop:product_list' %}">
+                    مشاهده همه محصولات
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

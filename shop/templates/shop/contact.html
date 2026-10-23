@@ -1,0 +1,90 @@
+
+{% extends 'parent/base.html' %}
+
+{% block title %}تماس با ما | فروشگاه{% endblock %}
+
+{% block content %}
+<div class="contact-page" dir="rtl">
+
+    <div class="contact-breadcrumb">
+        <a href="{% url 'shop:product_list' %}">صفحه اصلی</a>
+        <span>/</span>
+        <span>تماس با ما</span>
+    </div>
+
+    <section class="contact-heading">
+        <span class="contact-heading-label">اطلاعات ارتباطی</span>
+        <h1>تماس با ما</h1>
+        <p>
+            برای طرح پرسش‌ها، ارائه پیشنهادها یا بیان دیدگاه‌های خود
+            درباره پروژه، می‌توانید از راه‌های ارتباطی زیر استفاده کنید.
+        </p>
+    </section>
+
+    <div class="contact-layout">
+
+        <section class="contact-information">
+            <h2>اطلاعات تماس</h2>
+
+            <p class="contact-information-description">
+                اطلاعات ارتباطی توسعه‌دهنده جهت ارتباط و بررسی پروژه
+                در این بخش درج شده است.
+            </p>
+
+            <div class="contact-item">
+                <div class="contact-item-icon">✉</div>
+
+                <div class="contact-item-content">
+                    <span>پست الکترونیکی</span>
+                    <a href="mailto:Arhn85555@gmail.com">
+                        Arhn85555@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="contact-item-icon">GH</div>
+
+                <div class="contact-item-content">
+                    <span>گیت‌هاب</span>
+                    <a href="https://github.com/YOUR_USERNAME"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        <a href="https://github.com/AmirHossein-1385">https://github.com/AmirHossein-1385</a>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="contact-message-panel">
+            <span class="contact-panel-label">راه‌های ارتباطی</span>
+
+            <h2>ارتباط با توسعه‌دهنده</h2>
+
+            <p>
+                برای طرح پرسش‌ها، ارائه پیشنهادها یا بیان دیدگاه‌های خود
+                درباره پروژه، می‌توانید از طریق پست الکترونیکی اقدام نمایید.
+            </p>
+
+            <a class="contact-email-button"
+               href="mailto:Arhn85555@gmail.com">
+                ارسال ایمیل
+            </a>
+
+            <div class="contact-divider"></div>
+
+            <div class="contact-response-note">
+                <span class="contact-response-dot"></span>
+
+                <p>
+                    برای ارتباط با توسعه‌دهنده، از نشانی پست الکترونیکی
+                    درج‌شده در این صفحه استفاده کنید.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+{% endblock %}

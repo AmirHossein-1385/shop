@@ -1,0 +1,86 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}محصولات{% endblock %}
+
+{% block content %}
+    <div class="catalog-page" dir="rtl">
+
+        {% if messages %}
+            <div class="catalog-messages">
+                {% for ms in messages %}
+                    <div class="catalog-message">{{ ms }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="catalog-header">
+            <span class="catalog-eyebrow">فروشگاه آنلاین</span>
+            <h1 class="catalog-title">محصولات فروشگاه</h1>
+            <p class="catalog-subtitle">
+                محصولات موردنظرت رو پیدا کن و جزئیات هر محصول رو ببین.
+            </p>
+        </div>
+
+        <div class="catalog-grid">
+            {% for product in products %}
+                <article class="catalog-card">
+
+                    <a href="{{ product.get_absolute_url }}"
+                       class="catalog-image-link">
+
+                        {% if product.images.first %}
+                            <img
+                                src="{{ product.images.first.file.url }}"
+                                alt="{{ product.name }}"
+                                class="catalog-image"
+                            >
+                        {% else %}
+                            <div class="catalog-image-placeholder">
+                                تصویری برای این محصول وجود ندارد
+                            </div>
+                        {% endif %}
+
+                    </a>
+
+                    <div class="catalog-card-body">
+
+                        <h2 class="catalog-product-name">
+                            <a href="{{ product.get_absolute_url }}">
+                                {{ product.name }}
+                            </a>
+                        </h2>
+
+                        <div class="catalog-price-box">
+
+                            {% if product.price > product.new_price %}
+                                <span class="catalog-original-price">
+                                    {{ product.price }}
+                                </span>
+                            {% endif %}
+
+                            <div class="catalog-final-price">
+                                <span>{{ product.new_price }}</span>
+                                <span class="catalog-currency">تومان</span>
+                            </div>
+
+                        </div>
+
+                        <a href="{{ product.get_absolute_url }}"
+                           class="catalog-detail-button">
+                            مشاهده جزئیات
+                        </a>
+
+                    </div>
+                </article>
+
+            {% empty %}
+                <div class="catalog-empty">
+                    <h2>محصولی پیدا نشد</h2>
+                    <p>در حال حاضر محصولی برای نمایش وجود ندارد.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

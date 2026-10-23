@@ -1,0 +1,87 @@
+{% extends 'parent/base.html' %}
+{% load shop_tags %}
+{% load static %}
+
+{% block title %}آخرین محصولات{% endblock %}
+
+{% block content %}
+
+{% latest_products as latest_products_list %}
+
+<div class="latest-page" dir="rtl">
+
+    <section class="latest-header">
+        <h1>آخرین محصولات</h1>
+        <p>جدیدترین محصولات اضافه‌شده به فروشگاه را بررسی کن.</p>
+    </section>
+
+    <div class="latest-grid">
+
+        {% for product in latest_products_list %}
+
+            <article class="latest-card">
+
+                <a href="{{ product.get_absolute_url }}"
+                   class="latest-image">
+
+                    {% if product.images.first %}
+                        <img
+                            src="{{ product.images.first.file.url }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="latest-no-image">
+                            تصویری موجود نیست
+                        </div>
+                    {% endif %}
+
+                </a>
+
+                <div class="latest-content">
+
+                    <h2 class="latest-name">
+                        <a href="{{ product.get_absolute_url }}">
+                            {{ product.name }}
+                        </a>
+                    </h2>
+
+                    <div class="latest-prices">
+
+                        {% if product.price > product.new_price %}
+                            <span class="latest-old-price">
+                                {{ product.price }} تومان
+                            </span>
+                        {% endif %}
+
+                        <strong class="latest-new-price">
+                            {{ product.new_price }} تومان
+                        </strong>
+
+                    </div>
+
+                    <a href="{{ product.get_absolute_url }}"
+                       class="latest-view-btn">
+                        مشاهده محصول
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="latest-empty">
+                <h2>محصولی پیدا نشد</h2>
+                <p>در حال حاضر محصولی برای نمایش وجود ندارد.</p>
+                <a href="{% url 'shop:product_list' %}">
+                    مشاهده همه محصولات
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

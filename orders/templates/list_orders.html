@@ -1,0 +1,104 @@
+
+{% extends 'parent/base.html' %}
+
+{% block title %}سفارش‌های من{% endblock %}
+
+{% block content %}
+<div class="orders-page" dir="rtl">
+
+    <div class="orders-header">
+        <div>
+            <h1>سفارش‌های من</h1>
+            <p>سفارش‌های ثبت‌شده و وضعیت پرداخت آن‌ها را بررسی کنید.</p>
+        </div>
+        <div class="orders-icon">▤</div>
+    </div>
+
+    <div class="orders-card">
+
+        <div class="orders-card-header">
+            <div>
+                <h2>تاریخچه سفارش‌ها</h2>
+                <p>مدیریت و پیگیری خریدهای شما</p>
+            </div>
+
+            <span class="orders-count">
+                {{ orders|length }} سفارش
+            </span>
+        </div>
+
+        <div class="orders-table-wrapper">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>شماره سفارش</th>
+                        <th>تاریخ ثبت</th>
+                        <th>وضعیت پرداخت</th>
+                        <th>وضعیت سفارش</th>
+                        <th>جزئیات</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>
+                            <span class="order-number">#{{ order.id }}</span>
+                        </td>
+
+                        <td class="order-date">
+                            {{ order.created|date:"Y/m/d" }}
+                        </td>
+
+                        <td>
+                            {% if order.paid %}
+                                <span class="order-badge paid">
+                                    <span class="status-dot"></span>
+                                    پرداخت موفق
+                                </span>
+                            {% else %}
+                                <span class="order-badge unpaid">
+                                    <span class="status-dot"></span>
+                                    پرداخت نشده
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <span class="order-status">
+                                {{ order.get_status_display|default:order.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a class="order-detail-link"
+                               href="{% url 'orders:order_detail' order.id %}">
+                                مشاهده جزئیات
+                                <span class="detail-arrow">←</span>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="orders-empty">
+                                <div class="empty-icon">▤</div>
+                                <h3>هنوز سفارشی ثبت نکرده‌اید</h3>
+                                <p>
+                                    بعد از ثبت سفارش، اطلاعات آن در این قسمت نمایش داده می‌شود.
+                                </p>
+                                <a href="{% url 'shop:product_list' %}">
+                                    مشاهده محصولات
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

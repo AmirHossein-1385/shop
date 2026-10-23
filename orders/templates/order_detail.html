@@ -1,0 +1,94 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+<div class="order-detail">
+
+    {% for message in messages %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="order-header">
+        <h2>جزئیات سفارش #{{ order.id }}</h2>
+        <p>تاریخ ثبت: {{ order.created }}</p>
+    </div>
+
+    <div class="order-info">
+        <h3>اطلاعات مشتری</h3>
+
+        <p>نام: {{ order.first_name }} {{ order.last_name }}</p>
+        <p>شماره تماس: {{ order.phone }}</p>
+        <p>استان: {{ order.province }}</p>
+        <p>شهر: {{ order.city }}</p>
+        <p>آدرس: {{ order.address }}</p>
+        <p>کد پستی: {{ order.postal_code }}</p>
+    </div>
+
+    <div class="order-info">
+        <h3>وضعیت سفارش</h3>
+
+        <p>وضعیت: {{ order.status }}</p>
+
+        {% if order.delivery_time %}
+            <p>زمان تحویل: {{ order.delivery_time }}</p>
+        {% endif %}
+
+        {% if order.paid %}
+            <p>وضعیت پرداخت: پرداخت شده</p>
+        {% else %}
+            <p>وضعیت پرداخت: پرداخت نشده</p>
+        {% endif %}
+    </div>
+
+    <div class="order-items">
+        <h3>محصولات سفارش</h3>
+
+        {% for item in order.items.all %}
+            <div class="order-item">
+
+                <div>
+                    <h4>{{ item.product.name }}</h4>
+                    <p>تعداد: {{ item.quantity }}</p>
+                    <p>قیمت هر عدد: {{ item.price }} تومان</p>
+                    <p>مبلغ: {{ item.get_cost }} تومان</p>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="order-summary">
+        <p>مجموع محصولات: {{ order.get_total_cost }} تومان</p>
+        <p>هزینه ارسال: {{ order.get_post_cost }} تومان</p>
+        <strong>مبلغ نهایی: {{ order.get_final_cost }} تومان</strong>
+    </div>
+
+    <div class="order-actions">
+        <a href="{% url 'orders:transaction_create' order.id %}">
+             PDF  دانلود تراکنش به صورت
+        </a>
+    </div>
+
+    <div class="return-section">
+
+        <h3>درخواست مرجوعی</h3>
+
+        {% if status_request %}
+            <p>
+                وضعیت درخواست مرجوعی:
+                {{ status_request.status }}
+            </p>
+        {% else %}
+            <p>درخواستی برای مرجوعی ثبت نشده است.</p>
+
+            <a href="{% url 'orders:order_return' order.id %}">
+                درخواست مرجوعی
+            </a>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

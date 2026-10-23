@@ -1,0 +1,145 @@
+
+{% extends 'parent/base.html' %}
+
+{% block title %}درباره ما | فروشگاه{% endblock %}
+
+{% block content %}
+<div class="about-page" dir="rtl">
+
+    <div class="about-breadcrumb">
+        <a href="{% url 'shop:product_list' %}">صفحه اصلی</a>
+        <span>/</span>
+        <span>درباره ما</span>
+    </div>
+
+    <section class="about-header">
+        <div class="about-header-content">
+            <span class="about-label">معرفی سامانه</span>
+            <h1>درباره فروشگاه</h1>
+            <p>
+                معرفی یک سامانه فروشگاهی مبتنی بر Django با تمرکز بر
+                پیاده‌سازی قابلیت‌های اصلی فروش آنلاین و مدیریت سفارش‌ها.
+            </p>
+        </div>
+        <div class="about-header-icon">SHOP</div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-section-title">
+            <span class="about-title-line"></span>
+            <h2>معرفی پروژه</h2>
+        </div>
+
+        <p class="about-description">
+            این وب‌سایت یک پروژه نمونه‌کار در حوزه توسعه وب است که با
+            استفاده از فریم‌ورک Django طراحی و پیاده‌سازی شده است.
+            هدف از توسعه آن، نمایش دانش فنی در زمینه برنامه‌نویسی سمت سرور،
+            مدیریت داده‌ها و پیاده‌سازی فرایندهای متداول یک فروشگاه اینترنتی است.
+        </p>
+
+        <p class="about-description">
+            ساختار پروژه به‌گونه‌ای طراحی شده است که کاربران بتوانند محصولات
+            را بررسی کنند، از امکانات جست‌وجو و فیلتر استفاده کنند، سفارش خود
+            را ثبت کنند و اطلاعات مرتبط با حساب کاربری و تراکنش‌های خود را
+            مشاهده نمایند.
+        </p>
+    </section>
+
+    <section class="about-section">
+        <div class="about-section-title">
+            <span class="about-title-line"></span>
+            <h2>قابلیت‌های سامانه</h2>
+        </div>
+
+        <div class="about-features">
+            <div class="about-feature">
+                <span class="about-feature-number">01</span>
+                <div>
+                    <h3>مدیریت محصولات</h3>
+                    <p>نمایش محصولات، مشاهده جزئیات، جست‌وجو و فیلتر بر اساس معیارهای مختلف.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="about-feature-number">02</span>
+                <div>
+                    <h3>سبد خرید و سفارش‌ها</h3>
+                    <p>مدیریت اقلام سبد خرید، ثبت سفارش و مشاهده اطلاعات سفارش‌های ثبت‌شده.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="about-feature-number">03</span>
+                <div>
+                    <h3>حساب کاربری</h3>
+                    <p>ثبت‌نام، ورود و دسترسی به امکانات مرتبط با حساب کاربری.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="about-feature-number">04</span>
+                <div>
+                    <h3>پرداخت و تخفیف</h3>
+                    <p>اعمال کد تخفیف، محاسبه مبلغ نهایی و پیاده‌سازی فرایند آزمایشی پرداخت.</p>
+                </div>
+            </div>
+
+            <div class="about-feature">
+                <span class="about-feature-number">05</span>
+                <div>
+                    <h3>کیف پول و تراکنش‌ها</h3>
+                    <p>مدیریت موجودی کیف پول و نمایش سوابق تراکنش‌های ثبت‌شده.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-section-title">
+            <span class="about-title-line"></span>
+            <h2>فناوری‌های مورد استفاده</h2>
+        </div>
+
+        <div class="about-technologies">
+            <div class="about-technology">
+                <strong>Python</strong>
+                <span>زبان برنامه‌نویسی</span>
+            </div>
+            <div class="about-technology">
+                <strong>Django</strong>
+                <span>توسعه سمت سرور</span>
+            </div>
+            <div class="about-technology">
+                <strong>HTML &amp; CSS</strong>
+                <span>ساختار و طراحی صفحات</span>
+            </div>
+            <div class="about-technology">
+                <strong>JavaScript</strong>
+                <span>تعاملات رابط کاربری</span>
+            </div>
+            <div class="about-technology">
+                <strong>PostgreSQL</strong>
+                <span>مدیریت و ذخیره‌سازی اطلاعات</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="about-notice">
+        <strong>وضعیت پروژه</strong>
+        <p>
+            این سامانه با هدف ارائه نمونه‌کار برنامه‌نویسی توسعه یافته است.
+            پرداخت‌های موجود در نسخه فعلی آزمایشی هستند و به درگاه بانکی واقعی
+            متصل نیستند.
+        </p>
+    </div>
+
+    <div class="about-contact">
+        <div>
+            <h2>ارتباط با توسعه‌دهنده</h2>
+            <p>برای مشاهده اطلاعات تماس و راه‌های ارتباطی، به صفحه تماس با ما مراجعه کنید.</p>
+        </div>
+        <a href="">تماس با ما</a>
+    </div>
+
+</div>
+{% endblock %}

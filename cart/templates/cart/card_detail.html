@@ -1,0 +1,294 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}سبد خرید{% endblock %}
+
+{% block content %}
+
+<div class="cart-page" dir="rtl">
+
+    <header class="cart-header">
+        <div class="cart-header-icon">
+            <span>🛒</span>
+        </div>
+
+        <div>
+            <h1>سبد خرید شما</h1>
+            <p>محصولات انتخاب‌شده را بررسی و سفارش خود را تکمیل کنید.</p>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="cart-messages">
+            {% for message in messages %}
+                <div class="cart-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="cart-layout">
+
+        <section class="cart-products">
+
+            <div class="cart-section-title">
+                <h2>محصولات انتخاب‌شده</h2>
+                <span>سبد خرید</span>
+            </div>
+
+            {% for item in cart %}
+
+                <article class="product-item"
+                         data-item-id="{{ item.product.id }}">
+
+                    <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}"
+                       class="cart-product-image">
+
+                        {% with image=item.product.images.first %}
+                            {% if image %}
+                                <img src="{{ image.file.url }}"
+                                     alt="{{ item.product.name }}">
+                            {% else %}
+                                <span class="cart-no-image">
+                                    تصویری موجود نیست
+                                </span>
+                            {% endif %}
+                        {% endwith %}
+
+                    </a>
+
+                    <div class="cart-product-info">
+
+                        <h3>
+                            <a href="{% url 'shop:product_detail' item.product.id item.product.slug %}">
+                                {{ item.product.name }}
+                            </a>
+                        </h3>
+
+                        <div class="cart-product-price">
+                            <span>قیمت هر محصول</span>
+                            <strong>{{ item.product.new_price }} تومان</strong>
+                        </div>
+
+                        <div class="cart-quantity-row">
+                            <span>تعداد:</span>
+
+                            <div class="cart-quantity-control">
+                                <button type="button"
+                                        class="quantity-add"
+                                        aria-label="افزایش تعداد">+</button>
+
+                                <span class="item-quantity-{{ item.product.id }}">
+                                    {{ item.quantity }}
+                                </span>
+
+                                <button type="button"
+                                        class="quantity-decrease"
+                                        aria-label="کاهش تعداد">−</button>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-total">
+                            <span>قیمت کل محصول</span>
+                            <strong>
+                                <span class="item-total-{{ item.product.id }}">
+                                    {{ item.total }}
+                                </span>
+                                تومان
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <button type="button"
+                            class="quantity-remove"
+                            aria-label="حذف محصول">
+                        <span>×</span>
+                        حذف محصول
+                    </button>
+
+                </article>
+
+            {% empty %}
+
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛍️</div>
+                    <h2>سبد خرید شما خالی است</h2>
+                    <p>هنوز محصولی به سبد خرید اضافه نکرده‌اید.</p>
+
+                    <a href="{% url 'shop:product_list' %}"
+                       class="cart-primary-btn">
+                        مشاهده محصولات
+                    </a>
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+        <aside class="cart-summary">
+
+            <h2>خلاصه سفارش</h2>
+
+            <div class="cart-summary-row">
+                <span>قیمت محصولات</span>
+                <strong>
+                    <span id="item-total-price">
+                        {{ cart.get_total_price }}
+                    </span>
+                    تومان
+                </strong>
+            </div>
+
+            <div class="cart-summary-row">
+                <span>هزینه ارسال</span>
+                <strong>
+                    <span id="item-post-price">
+                        {{ cart.get_post_price }}
+                    </span>
+                    تومان
+                </strong>
+            </div>
+
+            <div class="cart-summary-divider"></div>
+
+            <div class="cart-summary-final">
+                <span>مبلغ قابل پرداخت</span>
+                <strong>
+                    <span id="item-final-price">
+                        {{ cart.get_final_price }}
+                    </span>
+                    تومان
+                </strong>
+            </div>
+
+            <form method="post"
+                  action="{% url 'shop:apply_code' %}"
+                  class="discount-form">
+
+                {% csrf_token %}
+
+                <label for="discount-code">کد تخفیف دارید؟</label>
+
+                <div class="discount-input-group">
+                    <input type="text"
+                           id="discount-code"
+                           name="code"
+                           placeholder="کد تخفیف را وارد کنید">
+
+                    <button type="submit">اعمال</button>
+                </div>
+
+            </form>
+
+            <div class="cart-checkout">
+                <a href="{% url 'orders:verify_phone' %}"
+                   class="cart-primary-btn">
+                    ادامه خرید
+                    <span>←</span>
+                </a>
+
+                <a href="{% url 'shop:product_list' %}"
+                   class="cart-secondary-btn">
+                    بازگشت به فروشگاه
+                </a>
+            </div>
+
+            <div class="cart-security-note">
+                <span>✓</span>
+                <p>قبل از ثبت نهایی سفارش، اطلاعات خرید خود را بررسی کنید.</p>
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('.quantity-add').on('click', function () {
+            updateQuantity(
+                $(this).closest('.product-item').data('item-id'),
+                'add'
+            );
+        });
+
+        $('.quantity-decrease').on('click', function () {
+            updateQuantity(
+                $(this).closest('.product-item').data('item-id'),
+                'decrease'
+            );
+        });
+
+        $('.quantity-remove').on('click', function () {
+            removeItem(
+                $(this).closest('.product-item').data('item-id')
+            );
+        });
+
+        function updateQuantity(itemId, action) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "cart:update_quantity" %}',
+                data: {
+                    item_id: itemId,
+                    action: action,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#item_count').text(response.item_count);
+                        $('#total_price').text(response.final_price);
+                        $('.item-quantity-' + itemId).text(response.quantity);
+                        $('.item-total-' + itemId).text(response.total);
+                        $('#item-total-price').text(response.total_price);
+                        $('#item-final-price').text(response.final_price);
+                    } else {
+                        alert('خطا در به‌روزرسانی تعداد محصول');
+                    }
+                },
+                error: function () {
+                    alert('ارتباط با سرور برقرار نشد.');
+                }
+            });
+        }
+
+        function removeItem(itemId) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "cart:remove_item" %}',
+                data: {
+                    item_id: itemId,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#item_count').text(response.item_count);
+                        $('#total_price').text(response.final_price || response.total_price);
+                        $('#item-total-price').text(response.total_price);
+                        $('#item-final-price').text(response.final_price);
+
+                        $('.product-item[data-item-id="' + itemId + '"]').remove();
+
+                        if ($('.product-item').length === 0) {
+                            location.reload();
+                        }
+                    } else {
+                        alert('خطا در حذف محصول');
+                    }
+                },
+                error: function () {
+                    alert('ارتباط با سرور برقرار نشد.');
+                }
+            });
+        }
+
+    });
+</script>
+
+{% endblock %}

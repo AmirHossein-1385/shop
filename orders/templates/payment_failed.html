@@ -1,0 +1,54 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+
+{% block title %}پرداخت ناموفق{% endblock %}
+
+{% block content %}
+
+<div class="fail-page" dir="rtl">
+
+    <div class="fail-card">
+
+        <div class="fail-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6L6 18"/>
+                <path d="M6 6l12 12"/>
+            </svg>
+        </div>
+
+        <h1>پرداخت ناموفق بود!</h1>
+
+        <p class="fail-description">
+            متأسفانه پرداخت سفارش شما انجام نشد.
+        </p>
+
+        <div class="fail-message">
+            <span class="fail-message-icon">!</span>
+            <div>
+                <strong>موجودی کیف پول کافی نیست</strong>
+                <p>
+                    موجودی کیف پول شما برای پرداخت مبلغ سفارش کافی نیست.
+                    لطفاً کیف پول خود را شارژ کنید یا روش پرداخت دیگری را انتخاب کنید.
+                </p>
+            </div>
+        </div>
+
+        <div class="fail-actions">
+
+            <a href="{% url 'shop:product_list' %}" class="fail-button">
+                بازگشت به فروشگاه
+            </a>
+
+            <a href="{% url 'account:wallet'%}" class="fail-wallet-button">
+                شارژ کیف پول
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

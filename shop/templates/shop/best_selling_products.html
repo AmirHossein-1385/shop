@@ -1,0 +1,61 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}محصولات پرفروش{% endblock %}
+
+{% block content %}
+
+<section class="best-selling">
+
+    <h1 class="section-title">محصولات پرفروش</h1>
+    <p class="section-description">
+        محبوب‌ترین محصولات فروشگاه ما
+    </p>
+
+    {% if products %}
+        <div class="products-grid">
+
+            {% for product in products %}
+                <article class="product-card">
+
+                    <div class="product-image">
+                        <span class="best-badge">پرفروش</span>
+
+                        {% with image=product.images.first %}
+                            {% if image %}
+                                <img src="{{ image.file.url }}"
+                                     alt="{{ product.name }}"
+                                     loading="lazy">
+                            {% else %}
+                                <span>تصویری موجود نیست</span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <div class="product-info">
+
+                        <h2 class="product-name">
+                            {{ product.name }}
+                        </h2>
+
+                        <div class="product-sales">
+                            <span>تعداد فروش</span>
+                            <span class="sales-number">
+                                {{ product.total_sold|default_if_none:0 }}
+                                عدد
+                            </span>
+                        </div>
+
+                    </div>
+                </article>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="empty-products">
+            هنوز محصول پرفروشی برای نمایش وجود ندارد.
+        </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}
