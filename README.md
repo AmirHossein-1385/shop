@@ -1,29 +1,31 @@
-# SabzShop 🛒
+# 🛒 SabzShop
 
-A Django-based e-commerce web application developed as a backend portfolio project.
+**A Django-based E-commerce Web Application**
 
-SabzShop provides essential online shopping features, including product management, shopping cart, order processing, user accounts, discount codes, and wallet management.
+SabzShop is a full-featured e-commerce web application developed with Python and Django as a backend portfolio project.
+
+The project focuses on implementing common e-commerce workflows, including product management, shopping cart, order processing, user authentication, discount management, and wallet transactions.
 
 ## ✨ Features
 
 ### 🛍️ Product Management
-- Product listing and detail pages
-- Product categories
+- Product listing and detailed product pages
+- Product categories and inventory management
 - Product search and filtering
-- Product sorting
+- Price-based sorting
 - Latest, best-selling, cheapest, and discounted products
 - Product reviews and ratings
-- Saved products
+- Save and manage favorite products
 
 ### 🛒 Shopping Cart
 - Session-based shopping cart
 - Add and remove products
 - Update product quantities
-- Automatic price calculation
+- Automatic cart total calculation
 - Shipping cost calculation based on product weight
 
-### 👤 User Accounts
-- Custom user model
+### 👤 User Management
+- Custom Django user model
 - User registration and authentication
 - Login and logout
 - Password change and reset
@@ -31,84 +33,78 @@ SabzShop provides essential online shopping features, including product manageme
 
 ### 📦 Order Management
 - Order creation and order history
-- Order status tracking
-- Order details
+- Order details and status tracking
+- Inventory updates during order processing
+- Order return requests
 - PDF invoice generation
-- Return request management
-- Inventory management
 
 ### 💳 Wallet System
 - Individual wallet for each user
-- Wallet recharge
-- Wallet transactions
-- Payment using wallet balance
+- Wallet recharge functionality
+- Wallet balance management
+- Wallet transaction history
+- Purchasing with wallet balance
 
-### 🎟️ Discount System
-- Discount codes
-- Discount validation
+### 🎟️ Discount Management
+- Discount code creation and validation
+- Percentage-based discounts
 - Discount usage tracking
-- User-specific discount usage restrictions
+- Restrictions on repeated discount usage
+
+### ⭐ Reviews and Ratings
+- Product comments
+- User-based product ratings
+- Average product rating calculation
+- One review per user for each product
+- Admin-controlled comment approval
 
 ### ⚙️ Administration
 - Customized Django Admin
 - Product and category management
-- Order management
+- Order and return request management
 - User and wallet management
 - Discount code management
-- Return request management
+- Order data export
 
 ## 🧰 Tech Stack
 
-- **Language:** Python
-- **Framework:** Django
-- **Database:** PostgreSQL
-- **Frontend:** HTML, CSS
-- **PDF Generation:** ReportLab
-- **Image Processing:** Pillow
-- **Version Control:** Git & GitHub
+| Technology | Purpose |
+|---|---|
+| Python 3.14 | Backend programming |
+| Django 6.1 | Web framework |
+| PostgreSQL | Relational database |
+| HTML5 | Page structure |
+| CSS3 | Styling |
+| JavaScript | Client-side interactions |
+| ReportLab | PDF invoice generation |
+| Pillow | Image processing |
+| django-jalali | Jalali date support |
+| Git & GitHub | Version control |
 
 ## 📁 Project Structure
 
 ```text
 sabzshop/
 │
-├── account/
-│   ├── models.py
-│   ├── views.py
-│   ├── forms.py
-│   └── ...
+├── account/              # User accounts and wallet
 │
-├── cart/
-│   ├── cart.py
-│   ├── views.py
-│   └── ...
+├── cart/                 # Shopping cart functionality
 │
-├── orders/
-│   ├── models.py
-│   ├── services.py
-│   ├── signals.py
-│   ├── views.py
-│   └── ...
+├── orders/               # Orders, payments and returns
 │
-├── shop/
-│   ├── models.py
-│   ├── views.py
-│   ├── filters.py
-│   ├── signals.py
-│   └── ...
+├── shop/                 # Products, reviews and discounts
 │
-├── sabzshop/
-│   ├── settings.py
-│   ├── urls.py
-│   └── ...
+├── sabzshop/             # Main Django configuration
 │
-├── images/
+├── images/               # Uploaded product images
+│
 ├── manage.py
 ├── requirements.txt
-└── .env.example
+├── .env.example
+└── .gitignore
 ```
 
-## 🚀 Installation
+## 🚀 Installation and Setup
 
 ### 1. Clone the repository
 
@@ -123,7 +119,7 @@ cd shop
 python -m venv .venv
 ```
 
-Activate it on Windows:
+Activate the environment on Windows:
 
 ```bash
 .venv\Scripts\activate
@@ -137,13 +133,23 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the project root using `.env.example` as a reference.
+Create a `.env` file from the example file.
 
-Set your Django secret key, database credentials, and email configuration.
+On Windows:
+
+```bash
+copy .env.example .env
+```
+
+Update the `.env` file with your own configuration, including:
+
+- Django secret key
+- PostgreSQL database credentials
+- Email credentials
 
 ### 5. Configure PostgreSQL
 
-Create a PostgreSQL database and update the database settings in your `.env` file.
+Create a PostgreSQL database and configure its credentials in your `.env` file.
 
 ### 6. Apply database migrations
 
@@ -151,28 +157,37 @@ Create a PostgreSQL database and update the database settings in your `.env` fil
 python manage.py migrate
 ```
 
-### 7. Create a superuser
+### 7. Create an administrator account
 
 ```bash
 python manage.py createsuperuser
 ```
 
-### 8. Run the development server
+### 8. Start the development server
 
 ```bash
 python manage.py runserver
 ```
 
-Open the application at:
+Open the application in your browser:
 
 http://127.0.0.1:8000/
 
-## ⚠️ Important Notes
+## 🔐 Environment Variables
+
+The application uses environment variables to manage sensitive configuration.
+
+The `.env.example` file contains the required variable names and example values.
+
+Never commit your actual `.env` file or sensitive credentials to version control.
+
+## ⚠️ Project Notes
 
 - This project is developed for educational and portfolio purposes.
-- The payment workflow currently uses a sandbox/demo implementation and does not process real payments.
-- External services such as email require valid configuration.
-- Do not commit your `.env` file or other sensitive credentials to GitHub.
+- The payment workflow uses a sandbox/demo implementation and does not process real payments.
+- SMS verification is not connected to a live SMS provider.
+- PostgreSQL must be configured locally before running the application.
+- External services require their own credentials and configuration.
 
 ## 👨‍💻 Developer
 
@@ -180,4 +195,8 @@ http://127.0.0.1:8000/
 
 Junior Python Backend Developer
 
-GitHub: [AmirHossein-1385](https://github.com/AmirHossein-1385)
+[GitHub Profile](https://github.com/AmirHossein-1385)
+
+---
+
+⭐ If you find this project interesting, feel free to explore the repository.
