@@ -198,5 +198,3 @@ Junior Python Backend Developer
 [GitHub Profile](https://github.com/AmirHossein-1385)
 
 ---
-
-⭐ If you find this project interesting, feel free to explore the repository.
