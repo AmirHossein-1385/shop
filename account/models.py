@@ -1,8 +1,9 @@
+# Create your models here.
 from django.utils import timezone
-
+from django_jalali.db import models as jmodels
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager, PermissionsMixin
-# Create your models here.
+
 
 
 class ShopUserManager(BaseUserManager):
@@ -34,7 +35,7 @@ class ShopUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=150, unique=True,null=True,blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = jmodels.jDateTimeField(default=timezone.now)
     objects = ShopUserManager()
 
     class Meta:
@@ -67,8 +68,8 @@ class Address(models.Model):
 class Wallet(models.Model):
     user = models.OneToOneField(ShopUser,related_name="wallet",on_delete=models.CASCADE)
     balance = models.DecimalField(default=0,max_digits=9,decimal_places=0)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    updated = jmodels.jDateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user}:{self.balance}"
@@ -82,7 +83,7 @@ class WalletTransaction(models.Model):
     wallet = models.ForeignKey(Wallet,related_name="transactions",on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=9,decimal_places=0)
     type = models.CharField(max_length=50,choices=CHOICES)
-    created = models.DateTimeField(auto_now_add=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.wallet.user} - {self.get_type_display()}-{self.amount}"

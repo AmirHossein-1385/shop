@@ -1,5 +1,5 @@
 from random import choices
-
+from django_jalali.db import models as jmodels
 from django.db import models
 from account.models import ShopUser
 from shop.models import Product
@@ -26,9 +26,9 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=10)
     city = models.CharField(max_length=50)
     province = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    delivery_time = models.DateTimeField(null=True, blank=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    updated = jmodels.jDateTimeField(auto_now=True)
+    delivery_time = jmodels.jDateTimeField(null=True, blank=True)
     status = models.CharField(max_length=50,choices=CHOICES,default="در صف بررسی")
     paid = models.BooleanField(default=False)
 
@@ -79,7 +79,7 @@ class SuccessfulTransaction(models.Model):
     order = models.ForeignKey(Order, related_name='transactions', on_delete=models.CASCADE)
     amount = models.PositiveIntegerField(default=0)
     transaction_id = models.CharField(max_length=100)
-    created = models.DateTimeField(auto_now_add=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.transaction_id
@@ -97,7 +97,7 @@ class ReturnRequest(models.Model):
     ]
     order = models.ForeignKey(Order, related_name='return_requests', on_delete=models.CASCADE)
     status = models.CharField(choices=CHOICES, max_length=30, default="در حال بررسی")
-    created = models.DateTimeField(auto_now_add=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.order.id}:{self.created}"

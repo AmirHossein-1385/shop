@@ -3,4 +3,11 @@ __pycache__/
 .venv/
 .idea/
 db.sqlite3
+db_backup.sqlite3
 backup*.json
+
+
+# Environment variables
+.env
+.env.*
+!.env.example

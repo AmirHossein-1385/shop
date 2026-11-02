@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from account.models import ShopUser
 from django.db.models import Avg
+from django_jalali.db import models as jmodels
 # Create your models here.
 
 
@@ -47,8 +48,8 @@ class Product(models.Model):
     weight = models.PositiveIntegerField(default=0, verbose_name="وزن")
     off = models.PositiveIntegerField(default=0, verbose_name="تخفیف")
     new_price = models.PositiveIntegerField(default=0, verbose_name="قیمت پس از تخفیف")
-    created = models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد")
-    updated = models.DateTimeField(auto_now=True, verbose_name="زمان بروزرسانی")
+    created = jmodels.jDateTimeField(auto_now_add=True, verbose_name="زمان ایجاد")
+    updated = jmodels.jDateTimeField(auto_now=True, verbose_name="زمان بروزرسانی")
     saved_by = models.ManyToManyField(ShopUser,'saved_products')
 
     class Meta:
@@ -77,7 +78,7 @@ class Image(models.Model):
     file = models.ImageField(upload_to=get_upload_path)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created']
@@ -101,9 +102,9 @@ class ProductFeature(models.Model):
 class DiscountCode(models.Model):
     code = models.CharField(max_length=50 , unique=True)
     discount = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
-    created = models.DateTimeField(auto_now_add=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    start_date = jmodels.jDateField()
+    end_date = jmodels.jDateField()
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -114,7 +115,7 @@ class DiscountUsage(models.Model):
     user = models.ForeignKey(ShopUser, on_delete=models.CASCADE)
     discount = models.ForeignKey(DiscountCode,on_delete=models.CASCADE)
     order = models.OneToOneField('orders.Order',related_name='discount_usage',on_delete=models.CASCADE)
-    used = models.DateTimeField(auto_now_add=True)
+    used = jmodels.jDateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user}:{self.discount}"
@@ -134,7 +135,7 @@ class Comment(models.Model):
     text = models.TextField()
     active = models.BooleanField(default=False)
     rating = models.DecimalField(max_digits=2,decimal_places=1,default=1,validators=[MinValueValidator(1), MaxValueValidator(5),])
-    created = models.DateTimeField(auto_now_add=True)
+    created = jmodels.jDateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user}:{self.text[:30]}"

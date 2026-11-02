@@ -32,5 +32,5 @@ class DiscountCodeAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['user','product','text','active','rating']
+    list_display = ['user','product','text','active','rating','created']
     list_editable = ['active']
