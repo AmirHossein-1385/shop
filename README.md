@@ -189,6 +189,49 @@ Never commit your actual `.env` file or sensitive credentials to version control
 - PostgreSQL must be configured locally before running the application.
 - External services require their own credentials and configuration.
 
+
+# 📸 Screenshots
+
+### 1. Home
+![Home](screenshots/home.png)
+
+### 2. Product Detail
+![Product Detail](screenshots/product_detail.png)
+
+### 3. Saved Products
+![Saved Products](screenshots/saved_products.png)
+
+### 4. Discounted Products
+![Discounted Products](screenshots/discounted_products.png)
+
+### 5. Shopping Cart
+![Shopping Cart](screenshots/Shopping_Cart.png)
+
+### 6. Wallet
+![Wallet](screenshots/wallet.png)
+
+### 7. Account Wallet
+![Account Wallet](screenshots/account-wallet.png)
+
+### 8. Wallet Transaction
+![Wallet Transaction](screenshots/wallet_transaction.png)
+
+### 9. Orders List
+![Orders List](screenshots/orders%20list.png)
+
+### 10. Address
+![Address](screenshots/address.png)
+
+### 11. Category
+![Category](screenshots/category.png)
+
+### 12. About
+![About](screenshots/about.png)
+
+### 13. Contact
+![Contact](screenshots/contact.png)
+
+
 ## 👨‍💻 Developer
 
 **AmirHossein Taghipour**
